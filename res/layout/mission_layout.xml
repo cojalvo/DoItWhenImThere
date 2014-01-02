@@ -1,0 +1,84 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_toRightOf="@+id/mission_date"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="4dp"
+         android:animateLayoutChanges="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/list_item_background"
+        android:orientation="horizontal"
+        android:padding="5dp" >
+
+        <TextView
+            android:id="@+id/mission_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:text="Friend Name"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:typeface="normal" />
+
+        <TextView
+            android:id="@+id/mission_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/mission_description"
+            android:layout_below="@+id/mission_description"
+            android:paddingLeft="5dp"
+            android:text=""
+            android:textColor="@color/common_signin_btn_text_light"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/mission_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/mission_title"
+            android:layout_below="@+id/mission_title"
+            android:maxLength="22"
+            android:paddingLeft="5dp"
+            android:text="Content"
+            android:textSize="17sp" />
+
+        <ImageView
+            android:id="@+id/event_navigation_button"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/mission_title"
+            android:layout_marginRight="47dp"
+            android:paddingRight="2dp"
+            android:paddingTop="5dp"
+            android:src="@drawable/navigate_img" />
+
+        <ImageView
+            android:id="@+id/event_edit_mission"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:layout_alignBottom="@+id/event_navigation_button"
+            android:layout_alignParentRight="true"
+            android:paddingRight="8dp"
+            android:src="@drawable/ic_edit_mission" />
+
+        <TextView
+            android:id="@+id/tv_location_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/mission_date"
+            android:layout_alignBottom="@+id/mission_date"
+            android:layout_marginLeft="2dp"
+            android:layout_toRightOf="@+id/mission_date"
+            android:text="locName"
+            android:textColor="@color/common_signin_btn_text_light" />
+    </RelativeLayout>
+
+</LinearLayout>

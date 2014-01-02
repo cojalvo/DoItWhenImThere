@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="#e9e7e7"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/undo_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="54dp"
+        android:animateLayoutChanges="true"
+        android:background="#33333333"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingRight="8dp" >
+
+        <TextView
+            android:id="@+id/undo_row_texttv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:text="@string/itemdeleted"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:background="#ffffff" />
+
+        <Button
+            android:id="@+id/undo_row_undobutton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.47"
+            android:background="@null"
+            android:drawableLeft="@drawable/ic_undo"
+            android:padding="10dp"
+            android:paddingRight="8dp"
+            android:text="@string/undo"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#c9c8c8"
+        android:padding="0dp" >
+
+        <TextView
+            android:id="@+id/tab_personal"
+            android:layout_width="120dp"
+            android:layout_height="55dp"
+            android:background="@drawable/img_blue_tab"
+            android:gravity="center"
+            android:text="Personal"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/tab_work"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/img_yellow_tab"
+            android:gravity="center"
+            android:text="Work"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/tab_other"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/img_green_tab"
+            android:gravity="center"
+            android:paddingBottom="0dp"
+            android:text="Other"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.3dp"
+        android:background="@android:color/darker_gray" />
+
+    <FrameLayout
+        android:id="@+id/empety_list_message_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Tap to add new mission"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@android:color/darker_gray" />
+    </FrameLayout>
+
+    <ListView
+        android:id="@+id/missionsList"
+        android:layout_width="fill_parent"
+        android:layout_height="332dp"
+        android:layout_weight="1.01"
+        android:background="#e9e7e7"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0.5dp" />
+
+    <LinearLayout
+        android:id="@+id/main_serach_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:animateLayoutChanges="true"
+        android:background="@drawable/search_layout_bg"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/img_search_tap_open"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="7dp"
+            android:textColor="@android:color/darker_gray"
+            android:layout_height="wrap_content"
+			android:text="Search"
+			android:textSize="10sp"
+            android:background="@drawable/img_search_tab3" />
+
+        <LinearLayout
+            android:id="@+id/serach_layout_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:visibility="gone" >
+
+            <EditText
+                android:id="@+id/event_search_edit_text"
+                android:layout_width="fill_parent"
+                android:layout_height="46dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/my_et_background"
+                android:ems="10"
+                android:hint="Search"
+                android:inputType="textVisiblePassword"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

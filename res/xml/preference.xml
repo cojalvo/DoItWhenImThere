@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <PreferenceCategory
+        android:key="my_area"
+        android:title="המטלות שלי" >
+        <Preference
+            android:key="show_events"
+            android:summary="הצג מטלות על המפה"
+            android:title="רשימת מטלות על המפה" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="my_settings"
+        android:title="הגדרות כלליות" >
+        <ListPreference
+            android:defaultValue="300000"
+            android:entries="@array/event_reminder_values"
+            android:entryValues="@array/event_reminder_values"
+            android:key="event_reminder"
+            android:summary="קבל תזכורות לאירועים"
+            android:title="תזכורות לאירועים" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

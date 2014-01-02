@@ -1,0 +1,12 @@
+
+*.class
+
+bin/AndroidManifest.xml
+
+bin/DoItWhenImThere.apk
+
+bin/R.txt
+
+bin/classes.dex
+
+*.html

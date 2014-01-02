@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/bt_add_mission"
+        android:icon="@drawable/ic_add_mission"
+        android:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/search"
+        
+        android:actionViewClass="android.widget.SearchView"
+        android:icon="@drawable/ic_search"
+        android:showAsAction="always"
+        android:title="Search addres"/>
+    
+            <item
+        android:id="@+id/bt_voice_add_mission"
+        android:icon="@drawable/ic_microphone"
+        android:showAsAction="always"
+        android:title="Quick mission"/>
+    
+
+</menu>

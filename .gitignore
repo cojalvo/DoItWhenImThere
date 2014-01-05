@@ -10,3 +10,21 @@ bin/R.txt
 bin/classes.dex
 
 *.html
+
+bin/dexedLibs/android-support-v7-appcompat-7005d1aed8cff356ad2025e0ac00c222.jar
+
+bin/dexedLibs/android-support-v7-appcompat-7005d1aed8cff356ad2025e0ac00c222.jar
+
+bin/dexedLibs/android-support-v7-appcompat-7005d1aed8cff356ad2025e0ac00c222.jar
+
+bin/dexedLibs/android-support-v7-appcompat-b3d460073d07482d8644c72121c719c8.jar
+
+bin/dexedLibs/library-listviewanimations-2d7481d7a47becb6f17535b1c596863c.jar
+
+bin/resources.ap_
+
+gen/com/google/android/gms/R.java
+
+gen/com/haarman/listviewanimations/R.java
+
+gen/com/haarman/listviewanimations/R.java

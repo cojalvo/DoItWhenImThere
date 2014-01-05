@@ -29,7 +29,7 @@ public class FusedLocationProvider implements
 	private LocationRequest request;
 	private LocationNoficationManager lManager;
 
-	private int googletimeVal = (int) (DateUtils.SECOND_IN_MILLIS*30), googledisVal = 0;
+	private int googletimeVal = (int) (DateUtils.MINUTE_IN_MILLIS*3), googledisVal = 0;
 
 	public FusedLocationProvider(Context context) {
 		this.context = context;

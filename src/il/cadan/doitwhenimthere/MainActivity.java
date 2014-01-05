@@ -18,6 +18,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.parse.Parse;
+import com.parse.ParseUser;
 
 import android.R.menu;
 import android.annotation.SuppressLint;
@@ -71,7 +72,8 @@ public class MainActivity extends Activity implements OnMapClickListener,
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		Parse.initialize(this, "wusl9kWw4Uv1XiYzFnVqg5zwG2N9TPG8ViafwaWV", "66gq6FOSuDUGMbxWSuGro4uuV0qrlJvMYVJoaYJZ"); 
+		Parse.initialize(this, "wusl9kWw4Uv1XiYzFnVqg5zwG2N9TPG8ViafwaWV",
+				"66gq6FOSuDUGMbxWSuGro4uuV0qrlJvMYVJoaYJZ");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -90,9 +92,8 @@ public class MainActivity extends Activity implements OnMapClickListener,
 		controller.startLocationNofificationService();
 
 	}
-	
-	private void minimizeKeyboard()
-	{
+
+	private void minimizeKeyboard() {
 		getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 		controller.updateViewModelInBackground();
@@ -159,7 +160,11 @@ public class MainActivity extends Activity implements OnMapClickListener,
 		inflater.inflate(R.menu.main, menu);
 		addMissionMenuItem = menu.getItem(0);
 		searchMenuItem = menu.getItem(1);
-		quickMissionMenuItem=menu.getItem(2);
+		quickMissionMenuItem = menu.getItem(2);
+		if(ParseUser.getCurrentUser()==null)
+			menu.getItem(3).setTitle("Sign In");
+		else
+			menu.getItem(3).setTitle("Sign Out");
 		// Associate searchable configuration with the SearchView
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 		SearchView searchView = (SearchView) menu.findItem(R.id.search)
@@ -171,7 +176,7 @@ public class MainActivity extends Activity implements OnMapClickListener,
 			searchMenuItem.setVisible(true);
 			quickMissionMenuItem.setVisible(false);
 			searchView.setQueryHint("Search address");
-			
+
 		} else {
 			addMissionMenuItem.setVisible(true);
 			searchMenuItem.setVisible(false);
@@ -190,7 +195,7 @@ public class MainActivity extends Activity implements OnMapClickListener,
 				mDrawerLayout.closeDrawers();
 				return true;
 			}
-			//doExit();
+			// doExit();
 
 		}
 		return super.onKeyDown(keyCode, event);
@@ -248,7 +253,15 @@ public class MainActivity extends Activity implements OnMapClickListener,
 			break;
 		case R.id.bt_voice_add_mission:
 			startVoiceRecognitionActivity();
-		break;
+			break;
+		case R.id.action_settings:
+			if(ParseUser.getCurrentUser()!=null) {
+				ParseUser.logOut();
+			}
+			else
+				backupProcces();
+			break;
+		
 
 		default:
 			break;
@@ -294,7 +307,7 @@ public class MainActivity extends Activity implements OnMapClickListener,
 			}
 		});
 		AddNewMissionDialog d = AddNewMissionDialog.getInstance(args);
-		
+
 		d.show(ft, "");
 	}
 
@@ -387,14 +400,16 @@ public class MainActivity extends Activity implements OnMapClickListener,
 		};
 		this.registerReceiver(missionUpdatedReciever, filterSend);
 	}
+
 	private void registerCreateNewMissionReciever() {
 		IntentFilter filterSend = new IntentFilter();
 		filterSend.addAction(DoITConstance.ACTION_CREATE_NEW_MISSION);
-		createNewMissionReciever=new BroadcastReceiver() {
-			
+		createNewMissionReciever = new BroadcastReceiver() {
+
 			@Override
 			public void onReceive(Context arg0, Intent intent) {
-				if (intent.getAction().equals(DoITConstance.ACTION_CREATE_NEW_MISSION)) {
+				if (intent.getAction().equals(
+						DoITConstance.ACTION_CREATE_NEW_MISSION)) {
 					addNewMissionClicked();
 				}
 			}
@@ -404,7 +419,7 @@ public class MainActivity extends Activity implements OnMapClickListener,
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		
+
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -429,7 +444,6 @@ public class MainActivity extends Activity implements OnMapClickListener,
 
 					@Override
 					public int describeContents() {
-						// TODO Auto-generated method stub
 						return 0;
 					}
 
@@ -523,68 +537,91 @@ public class MainActivity extends Activity implements OnMapClickListener,
 
 	private void handleIntent(Intent intent) {
 
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            //Toast.makeText(this, query, 300).show();
-            MessageHalper.showProgressDialog("Searching for addres..", this);
-            mapManager.getAddressFromString(query, new ApplicationCallaback<List<Address>>() {
-				
-				@Override
-				public void writeToParcel(Parcel dest, int flags) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public int describeContents() {
-					// TODO Auto-generated method stub
-					return 0;
-				}
-				
-				@Override
-				public void done(final List<Address> retObj, Exception e) {
-				    MessageHalper.closeProggresDialog();
-					if(retObj!=null && e==null)
-					{
-						Toast.makeText(MainActivity.this, "Map manager return: "+retObj.size()+" results", 300).show();
-						if(retObj.size()>0)
-						{
-							ArrayList<String> sResult=new ArrayList<String>();
-							for (Address address : retObj) {
-								String a=fromAddresToString(address);
-								sResult.add(a);
-							}
-						    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-						    builder.setTitle("Search Results").setIcon(R.drawable.ic_marker);
-						    builder.setCustomTitle(findViewById(R.layout.search_result_layout));
-						    final CharSequence[] cs = sResult.toArray(new CharSequence[sResult.size()]);
-						    builder.setItems(cs, new DialogInterface.OnClickListener() {
-						        public void onClick(DialogInterface dialog, int item) {
-						            Toast.makeText(getApplicationContext(), cs[item], Toast.LENGTH_SHORT).show();
-						            Address toNavigate=retObj.get(item);
-						            LatLng des=new LatLng(toNavigate.getLatitude(), toNavigate.getLongitude());
-						            minimizeKeyboard();
-						            mapManager.moveCameraLocation(des);
-						        }
-						    }).show();
-//							Address a =retObj.get(0);
-//							LatLng target=new LatLng(a.getLatitude(),a.getLongitude());
-//							mapManager.moveCameraLocation(target);
-							
+		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+			String query = intent.getStringExtra(SearchManager.QUERY);
+			// Toast.makeText(this, query, 300).show();
+			MessageHalper.showProgressDialog("Searching for addres..", this);
+			mapManager.getAddressFromString(query,
+					new ApplicationCallaback<List<Address>>() {
+
+						@Override
+						public void writeToParcel(Parcel dest, int flags) {
+							// TODO Auto-generated method stub
+
 						}
-					}
-					
-				}
-			});
-        }
-//        else if(intent.getAction()!=null && intent.getAction().equals("il.cadan.do"))
-//        {
-//        	Toast.makeText(this, "done was clicked", 300).show();
-//        }
-    }
+
+						@Override
+						public int describeContents() {
+							// TODO Auto-generated method stub
+							return 0;
+						}
+
+						@Override
+						public void done(final List<Address> retObj, Exception e) {
+							MessageHalper.closeProggresDialog();
+							if (retObj != null && e == null) {
+								Toast.makeText(
+										MainActivity.this,
+										"Map manager return: " + retObj.size()
+												+ " results", 300).show();
+								if (retObj.size() > 0) {
+									ArrayList<String> sResult = new ArrayList<String>();
+									for (Address address : retObj) {
+										String a = fromAddresToString(address);
+										sResult.add(a);
+									}
+									AlertDialog.Builder builder = new AlertDialog.Builder(
+											MainActivity.this);
+									builder.setTitle("Search Results").setIcon(
+											R.drawable.ic_marker);
+									builder.setCustomTitle(findViewById(R.layout.search_result_layout));
+									final CharSequence[] cs = sResult
+											.toArray(new CharSequence[sResult
+													.size()]);
+									builder.setItems(
+											cs,
+											new DialogInterface.OnClickListener() {
+												public void onClick(
+														DialogInterface dialog,
+														int item) {
+													Toast.makeText(
+															getApplicationContext(),
+															cs[item],
+															Toast.LENGTH_SHORT)
+															.show();
+													Address toNavigate = retObj
+															.get(item);
+													LatLng des = new LatLng(
+															toNavigate
+																	.getLatitude(),
+															toNavigate
+																	.getLongitude());
+													minimizeKeyboard();
+													mapManager
+															.moveCameraLocation(des);
+												}
+											}).show();
+									// Address a =retObj.get(0);
+									// LatLng target=new
+									// LatLng(a.getLatitude(),a.getLongitude());
+									// mapManager.moveCameraLocation(target);
+
+								}
+							}
+
+						}
+					});
+		}
+		// else if(intent.getAction()!=null &&
+		// intent.getAction().equals("il.cadan.do"))
+		// {
+		// Toast.makeText(this, "done was clicked", 300).show();
+		// }
+	}
 
 	private String fromAddresToString(Address address) {
-		if(address==null) return "";
+		if (address == null)
+			return "";
 		String firstPart = "";
 		String secondPart = "";
 		String thirdPart = "";
@@ -607,33 +644,67 @@ public class MainActivity extends Activity implements OnMapClickListener,
 		return addressText;
 	}
 
-	
-	private void startVoiceRecognitionActivity()
-	{
-		 Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-	        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-	                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-	        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Add Mission...");
-	        startActivityForResult(intent, REQUEST_CODE);
+	private void startVoiceRecognitionActivity() {
+		Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+				RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+		intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Add Mission...");
+		startActivityForResult(intent, REQUEST_CODE);
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	     if (requestCode == REQUEST_CODE && resultCode == RESULT_OK)
-	        {
-	            // Populate the wordsList with the String values the recognition engine thought it heard
-	            ArrayList<String> matches = data.getStringArrayListExtra(
-	                    RecognizerIntent.EXTRA_RESULTS);
-	            Mission m=new Mission();
-	            m.setTitle(matches.get(0));
-	            controller.addMission(m);
-	            Toast.makeText(this, matches.get(0), 300).show();
-	            
-	        }
-	        super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+			// Populate the wordsList with the String values the recognition
+			// engine thought it heard
+			ArrayList<String> matches = data
+					.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+			Mission m = new Mission();
+			m.setTitle(matches.get(0));
+			controller.addMission(m);
+			Toast.makeText(this, matches.get(0), 300).show();
+
+		}
+		super.onActivityResult(requestCode, resultCode, data);
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-	
-	
-	
+
+	private void backupProcces() {
+		ParseUser currentUser = ParseUser.getCurrentUser();
+		if (currentUser == null) {
+			android.app.FragmentTransaction ft = getFragmentManager()
+					.beginTransaction();
+			ft.addToBackStack(null);
+
+			// Create and show the dialog.
+			Bundle args = new Bundle();
+			// add the callBck to the argument bundle
+			args.putParcelable("callBack",
+					new ApplicationCallaback<ParseUser>() {
+
+						@Override
+						public int describeContents() {
+							// TODO Auto-generated method stub
+							return 0;
+						}
+
+						@Override
+						public void writeToParcel(Parcel arg0, int arg1) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void done(ParseUser currentUser, Exception e) {
+							if (currentUser != null) {
+
+							}
+						}
+					});
+			LoginDialog d = LoginDialog
+					.getInstance(args);
+			d.show(ft, "");
+
+		}
+	}
 }

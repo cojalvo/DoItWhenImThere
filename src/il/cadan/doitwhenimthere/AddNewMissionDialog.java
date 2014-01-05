@@ -340,4 +340,16 @@ public class AddNewMissionDialog extends CustomAlertDialogBase {
 		alert.show();
 	}
 
+	@Override
+	public Button gePositiveButton() {
+		AlertDialog d= (AlertDialog) getDialog();
+		return d.getButton(Dialog.BUTTON_POSITIVE);
+	}
+
+	@Override
+	public Button getNegativeButton() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

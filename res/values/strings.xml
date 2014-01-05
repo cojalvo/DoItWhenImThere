@@ -18,5 +18,12 @@
     <string name="countdown_dismissing">Dismissing</string>
     
     <string name="undo">Undo</string>
+    <string name="log_in">Log In</string>
+    <string name="user_name">User Name</string>
+    <string name="password">Password</string>
+    <string name="sign_up_now">Sign Up Now</string>
+    <string name="email_addres">Email</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="sign_up">Sign Up</string>
 
 </resources>

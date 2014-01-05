@@ -6,17 +6,19 @@
         android:showAsAction="ifRoom"/>
     <item
         android:id="@+id/search"
-        
         android:actionViewClass="android.widget.SearchView"
         android:icon="@drawable/ic_search"
         android:showAsAction="always"
         android:title="Search addres"/>
-    
-            <item
+    <item
         android:id="@+id/bt_voice_add_mission"
         android:icon="@drawable/ic_microphone"
         android:showAsAction="always"
         android:title="Quick mission"/>
-    
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_settings"/>
 
 </menu>

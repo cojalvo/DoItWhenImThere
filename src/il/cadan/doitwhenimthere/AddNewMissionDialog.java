@@ -7,6 +7,7 @@ import org.w3c.dom.Text;
 
 import il.cadan.doitwhenimthere.bl.ApplicationCallaback;
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -342,8 +343,9 @@ public class AddNewMissionDialog extends CustomAlertDialogBase {
 
 	@Override
 	public Button gePositiveButton() {
-		AlertDialog d= (AlertDialog) getDialog();
-		return d.getButton(Dialog.BUTTON_POSITIVE);
+		return (Button) view.findViewById(R.id.btn_create);
+//		AlertDialog d= (AlertDialog) getDialog();
+//		return d.getButton(Dialog.BUTTON_POSITIVE);
 	}
 
 	@Override
@@ -351,5 +353,17 @@ public class AddNewMissionDialog extends CustomAlertDialogBase {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public void setHeadLine(Builder builder) {
+
+	}
+
+	@Override
+	public void setbuttons(Builder builder) {
+	}
+	
+	
+	
 
 }

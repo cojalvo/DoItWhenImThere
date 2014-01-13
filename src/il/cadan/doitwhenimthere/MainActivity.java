@@ -15,6 +15,7 @@ import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.parse.Parse;
@@ -22,6 +23,7 @@ import com.parse.ParseUser;
 
 import android.R.menu;
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
@@ -36,6 +38,7 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.DrawableContainer;
 import android.location.Address;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -90,6 +93,10 @@ public class MainActivity extends Activity implements OnMapClickListener,
 		minimizeKeyboard();
 		controller.updateViewModelInBackground();
 		controller.startLocationNofificationService();
+		 // gets the activity's default ActionBar
+	    ActionBar actionBar = getActionBar();
+	    actionBar.show();
+	    actionBar.setDisplayHomeAsUpEnabled(true);
 
 	}
 
@@ -161,10 +168,6 @@ public class MainActivity extends Activity implements OnMapClickListener,
 		addMissionMenuItem = menu.getItem(0);
 		searchMenuItem = menu.getItem(1);
 		quickMissionMenuItem = menu.getItem(2);
-		if(ParseUser.getCurrentUser()==null)
-			menu.getItem(3).setTitle("Sign In");
-		else
-			menu.getItem(3).setTitle("Sign Out");
 		// Associate searchable configuration with the SearchView
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 		SearchView searchView = (SearchView) menu.findItem(R.id.search)
@@ -172,12 +175,14 @@ public class MainActivity extends Activity implements OnMapClickListener,
 		searchView.setSearchableInfo(searchManager
 				.getSearchableInfo(getComponentName()));
 		if (isDrawerOpen) {
+			Toast.makeText(this, "isDrawerOpen is true", 300).show();
 			addMissionMenuItem.setVisible(false);
 			searchMenuItem.setVisible(true);
 			quickMissionMenuItem.setVisible(false);
 			searchView.setQueryHint("Search address");
 
 		} else {
+			Toast.makeText(this, "isDrawerOpen is false", 300).show();
 			addMissionMenuItem.setVisible(true);
 			searchMenuItem.setVisible(false);
 			quickMissionMenuItem.setVisible(true);
@@ -255,14 +260,17 @@ public class MainActivity extends Activity implements OnMapClickListener,
 			startVoiceRecognitionActivity();
 			break;
 		case R.id.action_settings:
-			if(ParseUser.getCurrentUser()!=null) {
+			if (ParseUser.getCurrentUser() != null) {
 				ParseUser.logOut();
-			}
-			else
-				backupProcces();
+			} else
+				loginProcces();
 			break;
-		
-
+		case R.id.action_backup:
+			backup();
+			break;
+		case R.id.action_restore:
+			restore();
+			break;
 		default:
 			break;
 		}
@@ -420,6 +428,17 @@ public class MainActivity extends Activity implements OnMapClickListener,
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 
+		if (ParseUser.getCurrentUser() == null) {
+			menu.getItem(3).setTitle("Sign In");
+			menu.getItem(3).setIcon(R.drawable.ic_open);
+			menu.getItem(4).setVisible(false);
+			menu.getItem(5).setVisible(false);
+		} else {
+			menu.getItem(3).setTitle("Sign Out");
+			menu.getItem(3).setIcon(R.drawable.ic_add_mission_black);
+			menu.getItem(4).setVisible(true);
+			menu.getItem(5).setVisible(true);
+		}
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -669,7 +688,7 @@ public class MainActivity extends Activity implements OnMapClickListener,
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	private void backupProcces() {
+	private void loginProcces() {
 		ParseUser currentUser = ParseUser.getCurrentUser();
 		if (currentUser == null) {
 			android.app.FragmentTransaction ft = getFragmentManager()
@@ -701,10 +720,57 @@ public class MainActivity extends Activity implements OnMapClickListener,
 							}
 						}
 					});
-			LoginDialog d = LoginDialog
-					.getInstance(args);
+			LoginDialog d = LoginDialog.getInstance(args);
 			d.show(ft, "");
 
 		}
+	}
+
+	private void backup() {
+		MessageHalper.showProgressDialog("Backup...", this);
+		controller.backup(new ApplicationCallaback<Integer>() {
+
+			@Override
+			public void writeToParcel(Parcel arg0, int arg1) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public int describeContents() {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			public void done(Integer retObj, Exception e) {
+				MessageHalper.closeProggresDialog();
+
+			}
+		});
+	}
+
+	private void restore() {
+		MessageHalper.showProgressDialog("Restoring...", this);
+		controller.restore(new ApplicationCallaback<Integer>() {
+
+			@Override
+			public void writeToParcel(Parcel arg0, int arg1) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public int describeContents() {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+
+			@Override
+			public void done(Integer retObj, Exception e) {
+				MessageHalper.closeProggresDialog();
+
+			}
+		});
 	}
 }

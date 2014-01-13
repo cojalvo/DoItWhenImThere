@@ -24,7 +24,7 @@ public class MessageHalper
 	}
 	if (ac != null && !ac.isFinishing())
 	{
-	    pb = ProgressDialog.show(context, "טוען...", message);
+	    pb = ProgressDialog.show(context, "Loading...", message);
 	    pb.setCanceledOnTouchOutside(false);
 	}
     }
@@ -56,8 +56,8 @@ public class MessageHalper
     	AlertDialog alertDialog = new AlertDialog.Builder(context).create();
     	alertDialog.setTitle(title);
     	alertDialog.setMessage(message);
-    	alertDialog.setButton(alertDialog.BUTTON_POSITIVE, "אישור", yesListener);
-    	alertDialog.setButton(alertDialog.BUTTON_NEGATIVE, "ביטול", noListener);
+    	alertDialog.setButton(alertDialog.BUTTON_POSITIVE, "Ok", yesListener);
+    	alertDialog.setButton(alertDialog.BUTTON_NEGATIVE, "Cancel", noListener);
 
     	// Set the Icon for the Dialog
     	alertDialog.setIcon(R.drawable.ic_launcher);

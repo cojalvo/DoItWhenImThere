@@ -60,6 +60,10 @@ public class UpdateLocationMissionDialog extends AddNewLocationMissionDialog
 	@Override
 	public void processView() {
 		super.processView();
+		TextView tv_title=(TextView) view.findViewById(R.id.tv_dialog_title);
+		tv_title.setText("Update Mission");
+		Button update=(Button) view.findViewById(R.id.btn_create);
+		update.setText("Update");
 		EditText eventName = (EditText) view
 				.findViewById(R.id.event_name_edit_text);
 		eventName.setText(title);
@@ -78,21 +82,11 @@ public class UpdateLocationMissionDialog extends AddNewLocationMissionDialog
 			this.cal=cal;
 			Button dateButton = (Button) view
 					.findViewById(R.id.event_pick_date_button);
-			dateButton.setText(cal.get(Calendar.DAY_OF_MONTH)+"/"+cal.get(Calendar.MONTH)+"/"+cal.get(Calendar.YEAR));
+			dateButton.setText(ParsingHelper.fromDateToString(dateAndTime, "dd/MM/yyyy"));
 			cb.setChecked(false);
 			Button timeButton = (Button) view
 					.findViewById(R.id.event_pick_time);
-			int iHour=cal.get(Calendar.HOUR);
-			int iMinute=cal.get(Calendar.MINUTE);
-			String sHour = "";
-			String sMinute = "";
-			if(iHour>9) sHour+=iHour;
-			else
-				sHour="0"+iHour;
-			if(iMinute>9) sMinute+=iMinute;
-			else
-				sMinute="0"+iMinute;
-			timeButton.setText(sHour+":"+sMinute);
+			timeButton.setText(ParsingHelper.fromDateToString(dateAndTime, "HH:mm"));
 			timeLayout.setVisibility(View.VISIBLE);
 			TextView rStatus=(TextView) reminderLayou.findViewById(R.id.mission_tv_reminder_status);
 			rStatus.setText(this.choiceList[reminderFreq.ordinal()]);

@@ -22,6 +22,7 @@ public class Mission implements Comparable<Mission> {
 			this.startTime=mission.getStartTime();
 			this.endTime=mission.getEndTime();
 			this.done=mission.getDone();
+			this.category=mission.getCategory();
 			this.reminderFrequency=mission.getReminderFrequency();
 		}
 			

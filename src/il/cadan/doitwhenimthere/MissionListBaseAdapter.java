@@ -195,12 +195,18 @@ public class MissionListBaseAdapter extends BaseAdapter implements Filterable {
 					.findViewById(R.id.event_edit_mission);
 			holder.txt_locationName=(TextView) convertView.findViewById(R.id.tv_location_name);
 			holder.txt_locationName.setVisibility(View.GONE);
+			holder.img_loc_sign=(ImageView) convertView.findViewById(R.id.img_loc_sign);
+			holder.img_loc_sign.setVisibility(View.GONE);
+			holder.img_date_alarm=(ImageView) convertView.findViewById(R.id.img_date_alarm);
+			holder.img_date_alarm.setVisibility(View.GONE);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		if (currentMission.getStartTime() != null)
+		{
 			holder.txt_date.setText(ParsingHelper.fromDateToString(
 					currentMission.getStartTime(), "dd/MM/yyyy HH:mm"));
+		}
 		holder.txt_itemDescription.setText(currentMission.getDscription());
 		// mark as done
 		holder.txt_itemTitle.setText(currentMission.getTitle());
@@ -211,6 +217,10 @@ public class MissionListBaseAdapter extends BaseAdapter implements Filterable {
 				holder.txt_date.setVisibility(View.VISIBLE);
 			else
 				holder.txt_date.setVisibility(View.INVISIBLE);
+			if(currentMission.getReminderFrequency()!=ReminderFrequency.Off)
+				holder.img_date_alarm.setVisibility(View.VISIBLE);
+			else
+				holder.img_date_alarm.setVisibility(View.GONE);
 			holder.txt_itemDescription.setVisibility(View.VISIBLE);
 			holder.btn_edit.setVisibility(View.VISIBLE);
 			if(currentMission instanceof LocationMission)
@@ -223,6 +233,7 @@ public class MissionListBaseAdapter extends BaseAdapter implements Filterable {
 			holder.btn_edit.setVisibility(View.GONE);
 			holder.btn_navigate.setVisibility(View.GONE);
 			holder.txt_date.setVisibility(View.GONE);
+			holder.img_date_alarm.setVisibility(View.GONE);
 			holder.txt_locationName.setVisibility(View.GONE);
 			holder.txt_itemDescription.setVisibility(View.GONE);
 		}
@@ -246,6 +257,7 @@ public class MissionListBaseAdapter extends BaseAdapter implements Filterable {
 			}
 		});
 		if ((currentMission instanceof LocationMission)) {
+			holder.img_loc_sign.setVisibility(View.VISIBLE);
 			LocationMission navigateTo = (LocationMission) currentMission;
 			holder.btn_navigate.setTag(position);
 			holder.txt_locationName.setText(" "+navigateTo.getLocationName());
@@ -269,6 +281,10 @@ public class MissionListBaseAdapter extends BaseAdapter implements Filterable {
 				}
 			});
 
+		}
+		else
+		{
+			holder.img_loc_sign.setVisibility(View.GONE);
 		}
 		return convertView;
 	}
@@ -382,6 +398,8 @@ public class MissionListBaseAdapter extends BaseAdapter implements Filterable {
 		TextView txt_locationName;
 		ImageView btn_navigate;
 		ImageView btn_edit;
+		ImageView img_loc_sign;
+		ImageView img_date_alarm;
 	}
 
 	public void remove(int pos) {

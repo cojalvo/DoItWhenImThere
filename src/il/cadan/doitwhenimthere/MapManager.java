@@ -22,6 +22,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.os.Parcel;
 import android.os.SystemClock;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -38,6 +39,7 @@ import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -46,7 +48,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-public class MapManager implements InfoWindowAdapter {
+public class MapManager implements InfoWindowAdapter,OnMarkerDragListener {
 	private static MapManager instance = null;
 	private HashMap<Long, Marker> missionMatkerDictionary;
 	private HashMap<Marker, Long> markerMissionDictionary;
@@ -101,6 +103,7 @@ public class MapManager implements InfoWindowAdapter {
 		missionMatkerDictionary = new HashMap<Long, Marker>();
 		setOnMyLocationChangedListener();
 		registerViewModelReciever();
+		map.setOnMarkerDragListener(this);
 	}
 
 	public static void resetInstance() {
@@ -159,7 +162,7 @@ public class MapManager implements InfoWindowAdapter {
 	public void addMissionMarker(LocationMission mission) {
 		// create and config the marker Option
 		MarkerOptions markerOptions = new MarkerOptions();
-		markerOptions.position(mission.getLocation());
+		markerOptions.position(mission.getLocation()).draggable(true);
 		if(mission.getDone())
 			markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_icecream2));
 		else{
@@ -489,4 +492,47 @@ public class MapManager implements InfoWindowAdapter {
 //    {
 //    	map.addPolyline(new PolylineOptions().add(p,this.getmyLocation()).width(3).color(Color.BLACK));
 //    }
+
+	@Override
+	public void onMarkerDrag(Marker marker) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onMarkerDragEnd(Marker marker) {
+		Long missionId=markerMissionDictionary.get(marker);
+		final LatLng newLoc=marker.getPosition();
+		final LocationMission m=(LocationMission) controller.getMission(missionId);
+		MessageHalper.showProgressDialog("Loading...", context);
+		getAddresFromLatLng(newLoc, new ApplicationCallaback<String>() {
+			
+			@Override
+			public void writeToParcel(Parcel arg0, int arg1) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public int describeContents() {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+			
+			@Override
+			public void done(String retObj, Exception e) {
+				m.setLocationName(retObj);
+				m.setLocation(newLoc);
+				controller.updateMission(m);
+				MessageHalper.closeProggresDialog();
+			}
+		});
+		
+	}
+
+	@Override
+	public void onMarkerDragStart(Marker marker) {
+		// TODO Auto-generated method stub
+		
+	}
 }

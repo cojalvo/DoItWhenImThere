@@ -55,6 +55,10 @@ public class UpdateMissionDialog extends AddNewMissionDialog {
 	@Override
 	public void processView() {
 		super.processView();
+		TextView tv_title=(TextView) view.findViewById(R.id.tv_dialog_title);
+		tv_title.setText("Update Mission");
+		Button update=(Button) view.findViewById(R.id.btn_create);
+		update.setText("Update");
 		EditText eventName = (EditText) view
 				.findViewById(R.id.event_name_edit_text);
 		eventName.setText(title);

@@ -19,6 +19,8 @@ public interface IController
 	void updateViewModel();
 	List<LocationMission> getAllLocationMissions();
 	void snooze(Mission m,long delay);
+	void backup(ApplicationCallaback< Integer> callBack);
+	void restore(ApplicationCallaback< Integer> callBack);
 	
 	void startLocationNofificationService();
 }

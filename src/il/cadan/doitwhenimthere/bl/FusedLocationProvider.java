@@ -29,7 +29,7 @@ public class FusedLocationProvider implements
 	private LocationRequest request;
 	private LocationNoficationManager lManager;
 
-	private int googletimeVal = (int) (DateUtils.MINUTE_IN_MILLIS*3), googledisVal = 0;
+	private int googletimeVal = (int) (DateUtils.MINUTE_IN_MILLIS*60), googledisVal = 30;
 
 	public FusedLocationProvider(Context context) {
 		this.context = context;
@@ -45,8 +45,9 @@ public class FusedLocationProvider implements
 
 	public void start() {
 
-		Toast.makeText(context, "Start fused location base provider", 300).show();
 		request.setInterval(googletimeVal);
+		request.setSmallestDisplacement(100);
+		//request.setFastestInterval(googletimeVal);
 		//request.setFastestInterval(googletimeVal);
 		request.setSmallestDisplacement(googledisVal);
 		Log.d(TAG, "INTERVAL:+ GOOGLE-" + googletimeVal + "      GOOGLE-"

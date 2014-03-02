@@ -25,7 +25,7 @@
             android:layout_below="@+id/mission_title"
             android:maxLength="22"
             android:paddingLeft="5dp"
-            android:text="Content"
+            android:text="@string/content"
             android:textSize="17sp" />
 
         <ImageView
@@ -97,7 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="locName"
+                android:text="@string/locname"
                 android:textColor="@color/common_signin_btn_text_light" />
         </LinearLayout>
 

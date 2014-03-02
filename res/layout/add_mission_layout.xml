@@ -15,7 +15,7 @@
         android:layout_gravity="left"
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
-        android:text="Add Mission"
+        android:text="@string/add_mission"
         android:textColor="@android:color/black"
         android:textSize="35sp" />
 
@@ -105,14 +105,14 @@
                     android:id="@+id/event_pick_date_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Date" />
+                    android:text="@string/date" />
 
                 <Button
                     android:id="@+id/event_pick_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="40dp"
-                    android:text="Time" />
+                    android:text="@string/time" />
             </LinearLayout>
 
             <LinearLayout
@@ -134,7 +134,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:paddingTop="6dp"
-                    android:text="Reminder"
+                    android:text="@string/reminder"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textSize="20sp" />
 
@@ -144,7 +144,7 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="6dp"
                     android:paddingLeft="20dp"
-                    android:text="Off"
+                    android:text="@string/off"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
 
                 <View
@@ -163,7 +163,7 @@
             android:checked="true"
             android:paddingLeft="10dp"
             android:paddingTop="6dp"
-            android:text="Without date and time" />
+            android:text="@string/without_date_and_time" />
 
         <View
             android:layout_width="fill_parent"
@@ -186,7 +186,7 @@
             android:layout_gravity="center"
             android:gravity="left"
             android:paddingLeft="20dp"
-            android:text="Location"
+            android:text="@string/location"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <CheckBox
@@ -196,7 +196,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="10dp"
-            android:text="Notify in 100 m distance from the location"
+            android:text="@string/notify_in_100_m_distance_from_the_location"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <SeekBar
@@ -215,7 +215,7 @@
         android:background="@drawable/blue_button"
         android:gravity="center_horizontal"
         android:layout_marginTop="10dp"
-        android:text="Create"
+        android:text="@string/create"
         android:textColor="@android:color/white" />
 
 </LinearLayout>

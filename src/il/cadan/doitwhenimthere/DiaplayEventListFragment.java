@@ -1,7 +1,6 @@
 package il.cadan.doitwhenimthere;
 
-import il.cadan.doitwhenimthere.bl.IController;
-import il.cadan.doitwhenimthere.bl.MainController;
+import il.cadan.doitwhenimthere.bl.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +21,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcel;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.DragEvent;
@@ -419,8 +420,130 @@ public class DiaplayEventListFragment extends Fragment implements
 			}
 		});
 		currentTabTextView=personalTab;
+		workTab.setText(CategoryManage.getCategoryValue(getActivity(), Category.Work));
+		personalTab.setText(CategoryManage.getCategoryValue(getActivity(),Category.Personal));
+		otherTab.setText(CategoryManage.getCategoryValue(getActivity(),Category.Other));
 		
+		workTab.setOnLongClickListener(new OnLongClickListener() {
+			
+			@Override
+			public boolean onLongClick(View v) {
+					Bundle args=new Bundle();
+					args.putString("category", workTab.getText().toString());
+					args.putParcelable("callBack",new ApplicationCallaback<String>(){
+
+						@Override
+						public int describeContents() {
+							// TODO Auto-generated method stub
+							return 0;
+						}
+
+						@Override
+						public void writeToParcel(Parcel dest, int flags) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void done(String retObj, Exception e) {
+							if(e==null)
+							{
+								workTab.setText(retObj);
+								CategoryManage.setCategoryValue(getActivity(), Category.Work, retObj);
+							}
+							
+						}
+						
+					});
+					ChangeCategoryNameDialog cc=ChangeCategoryNameDialog.getInstance(args);
+					android.app.FragmentTransaction ft = getFragmentManager()
+							.beginTransaction();
+					ft.addToBackStack(null);
+					cc.show(ft, "");
+				return true;
+			}
+		});
+		personalTab.setOnLongClickListener(new OnLongClickListener() {
+			
+			@Override
+			public boolean onLongClick(View v) {
+				Bundle args=new Bundle();
+				args.putString("category", personalTab.getText().toString());
+				args.putParcelable("callBack",new ApplicationCallaback<String>(){
+
+					@Override
+					public int describeContents() {
+						// TODO Auto-generated method stub
+						return 0;
+					}
+
+					@Override
+					public void writeToParcel(Parcel dest, int flags) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void done(String retObj, Exception e) {
+						if(e==null)
+						{
+							personalTab.setText(retObj);
+							CategoryManage.setCategoryValue(getActivity(), Category.Personal, retObj);
+						}
+						
+					}
+					
+				});
+				ChangeCategoryNameDialog cc=ChangeCategoryNameDialog.getInstance(args);
+				android.app.FragmentTransaction ft = getFragmentManager()
+						.beginTransaction();
+				ft.addToBackStack(null);
+				cc.show(ft, "");
+			return true;
+			}
+		});
+		
+		otherTab.setOnLongClickListener(new OnLongClickListener() {
+			
+			@Override
+			public boolean onLongClick(View v) {
+				Bundle args=new Bundle();
+				args.putString("category", otherTab.getText().toString());
+				args.putParcelable("callBack",new ApplicationCallaback<String>(){
+
+					@Override
+					public int describeContents() {
+						// TODO Auto-generated method stub
+						return 0;
+					}
+
+					@Override
+					public void writeToParcel(Parcel dest, int flags) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void done(String retObj, Exception e) {
+						if(e==null)
+						{
+							otherTab.setText(retObj);
+							CategoryManage.setCategoryValue(getActivity(), Category.Other, retObj);
+						}
+						
+					}
+					
+				});
+				ChangeCategoryNameDialog cc=ChangeCategoryNameDialog.getInstance(args);
+				android.app.FragmentTransaction ft = getFragmentManager()
+						.beginTransaction();
+				ft.addToBackStack(null);
+				cc.show(ft, "");
+			return true;
+			}
+		});
 	}
+	
 	
 	public void switchTab(Category category)
 	{

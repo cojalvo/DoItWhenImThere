@@ -25,5 +25,33 @@
     <string name="email_addres">Email</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="sign_up">Sign Up</string>
+    <string name="notify_in_">"Notify in "</string>
+    <string name="m_distance_from_here">m distance from here</string>
+    <string name="off">Off</string>
+    <string name="only_once">Only once</string>
+    <string name="reminder_settings">Reminder Settings</string>
+    <string name="select_">"Select "</string>
+    <string name="please_enter_your_password">Please enter your Password</string>
+    <string name="please_enter_your_user_name">Please enter your User name</string>
+    <string name="user_name_or_password_is_incorrect">User name or password is incorrect</string>
+    <string name="login_">Login...</string>
+    <string name="todo_on_the_map">TODO On The Map</string>
+    <string name="todo_list">TODO List</string>
+    <string name="are_you_sure_you_want_to_exit_">are you sure you want to exit?</string>
+    <string name="new_mission_was_created_">"New mission was created: "</string>
+    <string name="locating_your_addres_">Locating your addres...</string>
+    <string name="restoring_">Restoring...</string>
+    <string name="backup_">Backup...</string>
+    <string name="add_mission">Add Mission</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="reminder">Reminder</string>
+    <string name="without_date_and_time">Without date and time</string>
+    <string name="location">Location</string>
+    <string name="notify_in_100_m_distance_from_the_location">Notify in 100 m distance from the location</string>
+    <string name="create">Create</string>
+    <string name="content">Content</string>
+    <string name="locname">locName</string>
+    <string name="do_it_when_i_m_there">Do It When I\'m There</string>
 
 </resources>

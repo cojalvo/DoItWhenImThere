@@ -38,7 +38,6 @@ public class AddNewLocationMissionDialog extends AddNewMissionDialog
 		if(eltv!=null)
 		{
 			eltv.setText(locationName);
-			Toast.makeText(getActivity(), "Set location name to: "+locationName, 300).show();
 		}
 		 sb=(SeekBar) locationLayout.findViewById(R.id.seekBar1);
 		 cb=(CheckBox) locationLayout.findViewById(R.id.cb_add_mission_notify_location);
@@ -70,7 +69,7 @@ public class AddNewLocationMissionDialog extends AddNewMissionDialog
 		    @Override
 		    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
 		    {
-		    	cb.setText("Notify in " + progress + "m distance from here"); //$NON-NLS-1$ //$NON-NLS-2$
+		    	cb.setText("Notify in " + progress + "m distance from here"); 
 		    }
 		});
 	}

@@ -93,20 +93,20 @@ public class LoginDialog extends CustomAlertDialogBase
 				String pass = password.getText().toString();
 				if (user.isEmpty() || user == null) {
 					 t = Toast.makeText(getActivity(),
-							"Please enter your User name", Toast.LENGTH_SHORT);
+							R.string.please_enter_your_user_name, Toast.LENGTH_SHORT);
 					t.setGravity(Gravity.BOTTOM, 0, 70);
 					t.show();
 					return;
 				}
 				if (pass == null || pass.isEmpty()) {
 					Toast t = Toast.makeText(getActivity(),
-							"Please enter your Password", Toast.LENGTH_SHORT);
+							R.string.please_enter_your_password, Toast.LENGTH_SHORT);
 					t.setGravity(Gravity.BOTTOM, 0, 70);
 					t.show();
 					return;
 
 				}
-				MessageHalper.showProgressDialog("Login...",getActivity());
+				MessageHalper.showProgressDialog(getActivity().getString(R.string.login_),getActivity());
 				ParseUser.logInInBackground(user, pass, new LogInCallback() {
 					public void done(ParseUser user, ParseException e) {
 						if (user != null) {
@@ -116,7 +116,7 @@ public class LoginDialog extends CustomAlertDialogBase
 							returnCallback();
 						} else {
 							 t = Toast.makeText(getActivity(),
-									"User name or password is incorrect",
+									R.string.user_name_or_password_is_incorrect,
 									Toast.LENGTH_SHORT);
 							t.setGravity(Gravity.BOTTOM, 0, 70);
 							t.show();

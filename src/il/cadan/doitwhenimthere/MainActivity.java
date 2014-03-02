@@ -10,6 +10,10 @@ import il.cadan.doitwhenimthere.bl.ApplicationCallaback;
 import il.cadan.doitwhenimthere.bl.IController;
 import il.cadan.doitwhenimthere.bl.MainController;
 
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.Tracker;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
@@ -68,6 +72,8 @@ public class MainActivity extends Activity implements OnMapClickListener,
 	private MenuItem quickMissionMenuItem;
 	private MenuItem searchMenuItem;
 	protected boolean inExitProcess;
+	private Tracker tracker;
+	private GoogleAnalytics gaInstance;
 	private boolean isDrawerOpen;
 	private Vibrator vibrator = null;
 	private BroadcastReceiver navigateReciever;
@@ -75,10 +81,12 @@ public class MainActivity extends Activity implements OnMapClickListener,
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		Parse.initialize(this, "wusl9kWw4Uv1XiYzFnVqg5zwG2N9TPG8ViafwaWV",
-				"66gq6FOSuDUGMbxWSuGro4uuV0qrlJvMYVJoaYJZ");
 		super.onCreate(savedInstanceState);
+        Parse.initialize(this, "wusl9kWw4Uv1XiYzFnVqg5zwG2N9TPG8ViafwaWV",
+				"66gq6FOSuDUGMbxWSuGro4uuV0qrlJvMYVJoaYJZ");
 		setContentView(R.layout.activity_main);
+		gaInstance = GoogleAnalytics.getInstance(this);
+	    tracker = gaInstance.getTracker("UA-48558343-1");
 		vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		handleIntent(getIntent());
 		initializeDrawerLayout();
@@ -123,14 +131,14 @@ public class MainActivity extends Activity implements OnMapClickListener,
 											// onPrepareOptionsMenu()
 				// mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 				isDrawerOpen = false;
-				getActionBar().setTitle("TODO List");
+				getActionBar().setTitle(R.string.todo_list);
 			}
 
 			public void onDrawerOpened(View drawerView) {
 				invalidateOptionsMenu(); // creates call to
 											// onPrepareOptionsMenu()
 				isDrawerOpen = true;
-				getActionBar().setTitle("TODO On The Map");
+				getActionBar().setTitle(R.string.todo_on_the_map);
 			}
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
@@ -175,14 +183,12 @@ public class MainActivity extends Activity implements OnMapClickListener,
 		searchView.setSearchableInfo(searchManager
 				.getSearchableInfo(getComponentName()));
 		if (isDrawerOpen) {
-			Toast.makeText(this, "isDrawerOpen is true", 300).show();
 			addMissionMenuItem.setVisible(false);
 			searchMenuItem.setVisible(true);
 			quickMissionMenuItem.setVisible(false);
 			searchView.setQueryHint("Search address");
 
 		} else {
-			Toast.makeText(this, "isDrawerOpen is false", 300).show();
 			addMissionMenuItem.setVisible(true);
 			searchMenuItem.setVisible(false);
 			quickMissionMenuItem.setVisible(true);
@@ -224,7 +230,7 @@ public class MainActivity extends Activity implements OnMapClickListener,
 
 		alertDialog.setNegativeButton("No", null);
 
-		alertDialog.setMessage("are you sure you want to exit?");
+		alertDialog.setMessage(R.string.are_you_sure_you_want_to_exit_);
 		alertDialog.setTitle(" ");
 		alertDialog.setIcon(R.drawable.ic_launcher);
 		alertDialog.show();
@@ -282,6 +288,7 @@ public class MainActivity extends Activity implements OnMapClickListener,
 	 * Open the new mission dialog and get the result in the callBack
 	 */
 	private void addNewMissionClicked() {
+		tracker.send(MapBuilder.createEvent("Main Activity", "New event was created", "MainActivity", null).build());
 		android.app.FragmentTransaction ft = getFragmentManager()
 				.beginTransaction();
 		ft.addToBackStack(null);
@@ -308,7 +315,7 @@ public class MainActivity extends Activity implements OnMapClickListener,
 				if (retObj != null)
 					Toast.makeText(
 							getApplicationContext(),
-							"New mission was created in name: "
+							R.string.new_mission_was_created_
 									+ retObj.getTitle(), 3000).show();
 				controller.addMission(retObj);
 
@@ -318,6 +325,19 @@ public class MainActivity extends Activity implements OnMapClickListener,
 
 		d.show(ft, "");
 	}
+	
+	  @Override
+	  public void onStart() {
+	    super.onStart();
+	    EasyTracker.getInstance(this).activityStart(this);  // Add this method.
+	  }
+	  
+	  
+	  @Override
+	  public void onStop() {
+	    super.onStop();
+	    EasyTracker.getInstance(this).activityStop(this);  // Add this method.
+	  }
 
 	private void registerMissionUpdateReciever() {
 		IntentFilter filterSend = new IntentFilter();
@@ -336,6 +356,7 @@ public class MainActivity extends Activity implements OnMapClickListener,
 				 * reminderFreq = ReminderFrequency.valueOf(freq); }
 				 */
 				if (intent.getAction().equals(DoITConstance.MISSIONL_UPDATED)) {
+					tracker.send(MapBuilder.createEvent("Main Activity", "event was updated", "MainActivity", null).build());
 					final Long id = intent.getLongExtra("id", -1);
 					Bundle args = new Bundle();
 					final Mission toUpdate = controller.getMission(id);
@@ -451,7 +472,7 @@ public class MainActivity extends Activity implements OnMapClickListener,
 	@Override
 	public void onMapLongClick(final LatLng point) {
 		vibrator.vibrate(50);
-		MessageHalper.showProgressDialog("Locating your addres...", this);
+		MessageHalper.showProgressDialog(getString(R.string.locating_your_addres_), this);
 		mapManager.getAddresFromLatLng(point,
 				new ApplicationCallaback<String>() {
 
@@ -468,8 +489,9 @@ public class MainActivity extends Activity implements OnMapClickListener,
 
 					@Override
 					public void done(String retObj, Exception e) {
+						tracker.send(MapBuilder.createEvent("Main Activity", "New location event was created", "MainActivity", null).build());
 						MessageHalper.closeProggresDialog();
-						Toast.makeText(MainActivity.this, retObj, 500).show();
+						//Toast.makeText(MainActivity.this, retObj, 500).show();
 
 						addNewMissionClicked(point, retObj);
 
@@ -557,6 +579,7 @@ public class MainActivity extends Activity implements OnMapClickListener,
 	private void handleIntent(Intent intent) {
 
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+			tracker.send(MapBuilder.createEvent("Main Activity", "user searched for addres", "MainActivity", null).build());
 			String query = intent.getStringExtra(SearchManager.QUERY);
 			// Toast.makeText(this, query, 300).show();
 			MessageHalper.showProgressDialog("Searching for addres..", this);
@@ -664,6 +687,7 @@ public class MainActivity extends Activity implements OnMapClickListener,
 	}
 
 	private void startVoiceRecognitionActivity() {
+		tracker.send(MapBuilder.createEvent("Main Activity", "New quick event was created", "MainActivity", null).build());
 		Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
 				RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -689,6 +713,7 @@ public class MainActivity extends Activity implements OnMapClickListener,
 	}
 
 	private void loginProcces() {
+		tracker.send(MapBuilder.createEvent("Main Activity", "user was loged in", "", null).build());
 		ParseUser currentUser = ParseUser.getCurrentUser();
 		if (currentUser == null) {
 			android.app.FragmentTransaction ft = getFragmentManager()
@@ -727,7 +752,8 @@ public class MainActivity extends Activity implements OnMapClickListener,
 	}
 
 	private void backup() {
-		MessageHalper.showProgressDialog("Backup...", this);
+		MessageHalper.showProgressDialog(getString(R.string.backup_), this);
+		tracker.send(MapBuilder.createEvent("Main Activity", "user backup his data", "MainActivity", null).build());
 		controller.backup(new ApplicationCallaback<Integer>() {
 
 			@Override
@@ -751,7 +777,8 @@ public class MainActivity extends Activity implements OnMapClickListener,
 	}
 
 	private void restore() {
-		MessageHalper.showProgressDialog("Restoring...", this);
+		MessageHalper.showProgressDialog(getString(R.string.restoring_), this);
+		tracker.send(MapBuilder.createEvent("Main Activity", "user restore his data", "MainActivity", null).build());
 		controller.restore(new ApplicationCallaback<Integer>() {
 
 			@Override

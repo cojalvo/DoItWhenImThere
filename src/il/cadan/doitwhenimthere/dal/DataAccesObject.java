@@ -178,6 +178,9 @@ public class DataAccesObject implements IDataAccesObject {
 
 	
 
+	/*
+	 * convert the cursor to Mission object.
+	 */
 	private Mission cursorToMission(Cursor cursor) {
 		Mission mission = null;
 		long id;

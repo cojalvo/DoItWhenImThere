@@ -252,7 +252,7 @@ public class MissionListBaseAdapter extends BaseAdapter implements Filterable {
 			@Override
 			public void onClick(View arg0) {
 				invokeUpdateMission(currentMission.getId());
-				Toast.makeText(context, "Edit Btn was clicked", 300).show();
+				//Toast.makeText(context, "Edit Btn was clicked", 300).show();
 
 			}
 		});
@@ -269,10 +269,10 @@ public class MissionListBaseAdapter extends BaseAdapter implements Filterable {
 					Integer position = (Integer) v.getTag();
 					LocationMission navigateTo = (LocationMission) filteredMissionList
 							.get(position).getMission();
-					Toast.makeText(
-							context,
-							"navigate Btn was clicked at item in posigion "
-									+ position, 300).show();
+				//	Toast.makeText(
+					//		context,
+					//		"navigate Btn was clicked at item in posigion "
+					//				+ position, 300).show();
 					invokeNavigate(currentMission.getId());
 					
 					// Controller controller = Controller.getInstance(null);

@@ -14,6 +14,7 @@ public class DoITConstance
 	public static String ACTION_SNOOZE_THREE_HOUR="il.cadan.snooze.THREE_HOUR";
 	public static String ACTION_IGNORE="il.cadan.ignore";
 	public static String ACTION_CREATE_NEW_MISSION="il.cadan.create.new.mission";
+	public static String SHARED_PREFERENCES="il.cadan.shared";
 	
 
 }
